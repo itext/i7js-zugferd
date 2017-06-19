@@ -1,0 +1,8 @@
+/target/
+.classpath
+.project
+.settings
+/results/
+invoices.lck
+invoices.log
+invoices.properties
