@@ -56,7 +56,7 @@ public class PdfA3a {
      */
     public void createPdf(String dest) throws IOException {
     	PdfADocument pdfDocument = new PdfADocument(
-    			new PdfWriter(dest), PdfAConformanceLevel.PDF_A_3B,
+    			new PdfWriter(dest), PdfAConformanceLevel.PDF_A_3A,
     			new PdfOutputIntent("Custom", "", "http://www.color.org",
         	            "sRGB IEC61966-2.1", new FileInputStream(ICC)));
     	pdfDocument.setDefaultPageSize(PageSize.A4.rotate());
