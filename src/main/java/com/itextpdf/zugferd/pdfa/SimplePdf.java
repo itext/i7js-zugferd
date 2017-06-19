@@ -1,9 +1,11 @@
+/*
+ * Examples written in the context of a book about ZUGFeRD:
+ * http://developers.itextpdf.com/content/zugferd-future-invoicing/2-creating-pdfa-files-itext 
+ */
 package com.itextpdf.zugferd.pdfa;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.MalformedURLException;
 
 import com.itextpdf.io.image.ImageDataFactory;
 import com.itextpdf.kernel.geom.PageSize;
@@ -14,6 +16,9 @@ import com.itextpdf.layout.element.Image;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Text;
 
+/**
+ * Creates a simple PDF with text and images.
+ */
 public class SimplePdf {
 
     /** The resulting PDF. */
@@ -24,35 +29,38 @@ public class SimplePdf {
     public static final String DOG = "resources/images/dog.bmp";
 
     /**
-     * Creates a simple PDF with images and text.
-     * @param args no arguments needed.
-     * @throws IOException
-     * @throws DocumentException 
+     * The main method.
+     *
+     * @param args the arguments
+     * @throws IOException Signals that an I/O exception has occurred.
      */
     static public void main(String args[]) throws IOException {
         File file = new File(DEST);
         file.getParentFile().mkdirs();
         new SimplePdf().createPdf(DEST);
     }
-    
+
     /**
-     * Creates a simple PDF with images and text
-     * @param dest  the resulting PDF
-     * @throws IOException
-     * @throws MalformedURLException 
-     * @throws FileNotFoundException 
-     * @throws DocumentException 
+     * Creates the pdf.
+     *
+     * @param dest the dest
+     * @throws IOException Signals that an I/O exception has occurred.
      */
     public void createPdf(String dest) throws IOException {
+    	// step 1
     	PdfDocument pdfDocument = new PdfDocument(new PdfWriter(dest));
     	pdfDocument.setDefaultPageSize(PageSize.A4.rotate());
+    	// step 2
     	Document document = new Document(pdfDocument);
-        Paragraph p = new Paragraph().setFontSize(20)
+    	// step 3
+        document.add(
+        	new Paragraph()
+        		.setFontSize(20)
         		.add(new Text("The quick brown "))
         		.add(new Image(ImageDataFactory.create(FOX)))
         		.add(new Text(" jumps over the lazy "))
-				.add(new Image(ImageDataFactory.create(DOG)));
-        document.add(p);
+				.add(new Image(ImageDataFactory.create(DOG))));
+        // step 4
         document.close();
     }
 

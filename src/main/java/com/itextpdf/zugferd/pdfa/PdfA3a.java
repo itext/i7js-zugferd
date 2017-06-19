@@ -1,9 +1,12 @@
+/*
+ * Examples written in the context of a book about ZUGFeRD:
+ * http://developers.itextpdf.com/content/zugferd-future-invoicing/2-creating-pdfa-files-itext 
+ */
 package com.itextpdf.zugferd.pdfa;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.net.MalformedURLException;
 
 import com.itextpdf.io.image.ImageDataFactory;
 import com.itextpdf.kernel.font.PdfFont;
@@ -18,6 +21,9 @@ import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Text;
 import com.itextpdf.pdfa.PdfADocument;
 
+/**
+ * Creates a PDF/A-3a version of the Quick Brown Fox example.
+ */
 public class PdfA3a {
 
     /** The resulting PDF. */
@@ -35,7 +41,6 @@ public class PdfA3a {
      * Creates a simple PDF with images and text.
      * @param args no arguments needed.
      * @throws IOException
-     * @throws DocumentException 
      */
     static public void main(String args[]) throws IOException {
         File file = new File(DEST);
@@ -44,12 +49,10 @@ public class PdfA3a {
     }
     
     /**
-     * Creates a simple PDF with images and text
+     * Creates a simple PDF with images and text.
+     *
      * @param dest  the resulting PDF
-     * @throws IOException
-     * @throws MalformedURLException 
-     * @throws FileNotFoundException 
-     * @throws DocumentException 
+     * @throws IOException Signals that an I/O exception has occurred.
      */
     public void createPdf(String dest) throws IOException {
     	PdfADocument pdfDocument = new PdfADocument(
@@ -60,12 +63,18 @@ public class PdfA3a {
     	pdfDocument.setTagged();
     	Document document = new Document(pdfDocument);
     	PdfFont font = PdfFontFactory.createFont(FONT, true);
-        Paragraph p = new Paragraph().setFont(font).setFontSize(20)
+		Image fox = new Image(ImageDataFactory.create(FOX));
+		fox.getAccessibilityProperties().setAlternateDescription("fox");
+		Image dog = new Image(ImageDataFactory.create(DOG));
+		dog.getAccessibilityProperties().setAlternateDescription("dog");
+    	document.add(
+    		new Paragraph()
+    			.setFont(font)
+    			.setFontSize(20)
         		.add(new Text("The quick brown "))
-        		.add(new Image(ImageDataFactory.create(FOX)))
+        		.add(fox)
         		.add(new Text(" jumps over the lazy "))
-				.add(new Image(ImageDataFactory.create(DOG)));
-        document.add(p);
+				.add(dog));
         document.close();
     }
 
