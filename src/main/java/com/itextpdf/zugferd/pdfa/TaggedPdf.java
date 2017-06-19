@@ -47,10 +47,13 @@ public class TaggedPdf {
      * @throws IOException Signals that an I/O exception has occurred.
      */
     public void createPdf(String dest) throws IOException {
+    	// step 1
     	PdfDocument pdfDocument = new PdfDocument(new PdfWriter(dest));
     	pdfDocument.setDefaultPageSize(PageSize.A4.rotate());
     	pdfDocument.setTagged();
+    	// step 2
     	Document document = new Document(pdfDocument);
+    	// step 3
         document.add(
             	new Paragraph()
             		.setFontSize(20)
@@ -58,6 +61,7 @@ public class TaggedPdf {
             		.add(new Image(ImageDataFactory.create(FOX)))
             		.add(new Text(" jumps over the lazy "))
     				.add(new Image(ImageDataFactory.create(DOG))));
+        // step 4
         document.close();
     }
 

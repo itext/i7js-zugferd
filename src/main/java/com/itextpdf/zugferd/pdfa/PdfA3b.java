@@ -56,19 +56,22 @@ public class PdfA3b {
      * @throws IOException Signals that an I/O exception has occurred.
      */
     public void createPdf(String dest) throws IOException {
+    	// step 1
     	PdfADocument pdfDocument = new PdfADocument(
     			new PdfWriter(dest), PdfAConformanceLevel.PDF_A_3B,
     			new PdfOutputIntent("Custom", "", "http://www.color.org",
         	            "sRGB IEC61966-2.1", new FileInputStream(ICC)));
     	pdfDocument.setDefaultPageSize(PageSize.A4.rotate());
+    	// step 2
     	Document document = new Document(pdfDocument);
+    	// step 3
     	PdfFont font = PdfFontFactory.createFont(FONT, true);
-        Paragraph p = new Paragraph().setFont(font).setFontSize(20)
+        document.add(new Paragraph().setFont(font).setFontSize(20)
         		.add(new Text("The quick brown "))
         		.add(new Image(ImageDataFactory.create(FOX)))
         		.add(new Text(" jumps over the lazy "))
-				.add(new Image(ImageDataFactory.create(DOG)));
-        document.add(p);
+				.add(new Image(ImageDataFactory.create(DOG))));
+        // step 4
         document.close();
     }
 

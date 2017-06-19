@@ -55,13 +55,16 @@ public class PdfA3a {
      * @throws IOException Signals that an I/O exception has occurred.
      */
     public void createPdf(String dest) throws IOException {
+    	// step 1
     	PdfADocument pdfDocument = new PdfADocument(
     			new PdfWriter(dest), PdfAConformanceLevel.PDF_A_3A,
     			new PdfOutputIntent("Custom", "", "http://www.color.org",
         	            "sRGB IEC61966-2.1", new FileInputStream(ICC)));
     	pdfDocument.setDefaultPageSize(PageSize.A4.rotate());
     	pdfDocument.setTagged();
+    	// step 2
     	Document document = new Document(pdfDocument);
+    	// step 3
     	PdfFont font = PdfFontFactory.createFont(FONT, true);
 		Image fox = new Image(ImageDataFactory.create(FOX));
 		fox.getAccessibilityProperties().setAlternateDescription("fox");
@@ -74,7 +77,8 @@ public class PdfA3a {
         		.add(new Text("The quick brown "))
         		.add(fox)
         		.add(new Text(" jumps over the lazy "))
-				.add(dog));
+        		.add(dog));
+    	// step 4
         document.close();
     }
 
