@@ -51,17 +51,13 @@ public class TaggedPdf {
     	pdfDocument.setDefaultPageSize(PageSize.A4.rotate());
     	pdfDocument.setTagged();
     	Document document = new Document(pdfDocument);
-		Image fox = new Image(ImageDataFactory.create(FOX));
-		fox.getAccessibilityProperties().setAlternateDescription("fox");
-		Image dog = new Image(ImageDataFactory.create(DOG));
-		dog.getAccessibilityProperties().setAlternateDescription("dog");
-    	document.add(
-    		new Paragraph()
-    			.setFontSize(20)
-        		.add(new Text("The quick brown "))
-        		.add(fox)
-        		.add(new Text(" jumps over the lazy "))
-				.add(dog));
+        document.add(
+            	new Paragraph()
+            		.setFontSize(20)
+            		.add(new Text("The quick brown "))
+            		.add(new Image(ImageDataFactory.create(FOX)))
+            		.add(new Text(" jumps over the lazy "))
+    				.add(new Image(ImageDataFactory.create(DOG))));
         document.close();
     }
 
