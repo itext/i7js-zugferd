@@ -1,3 +1,7 @@
+/*
+ * This example was written by Bruno Lowagie in the context of a book.
+ * See http://developers.itextpdf.com/content/zugferd-future-invoicing/4-creating-xml-invoices-itext
+ */
 package com.itextpdf.zugferd;
 
 import java.io.File;
