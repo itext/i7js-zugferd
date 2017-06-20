@@ -22,14 +22,25 @@ import com.itextpdf.zugferd.validation.comfort.PaymentMeansCode;
 import com.itextpdf.zugferd.validation.comfort.TaxCategoryCode;
 
 /**
+ * Class in which we can store all the data of an {@link Invoice} object.
  *
  * @author Bruno Lowagie (iText Software)
  */
 public class InvoiceData {
     
+    /**
+     * Creates a new {@link InvoiceData} instance.
+     */
     public InvoiceData() {
     }
     
+    /**
+     * Creates a object that implements the {@link IBasicProfile} interface,
+     * given a specific {@link Invoice} object.
+     *
+     * @param invoice the invoice
+     * @return the {@link IBasicProfile} implementation
+     */
     public IBasicProfile createBasicProfileData(Invoice invoice) {
     	BasicProfileImp profileImp = new BasicProfileImp(true);
         importData(profileImp, invoice);
@@ -37,6 +48,13 @@ public class InvoiceData {
         return profileImp;
     }
     
+    /**
+     * Creates a object that implements the {@link IComfortProfile} interface,
+     * given a specific {@link Invoice} object.
+     *
+     * @param invoice the invoice
+     * @return the {@link IComfortProfile} implementation
+     */
     public IComfortProfile createComfortProfileData(Invoice invoice) {
         ComfortProfileImp profileImp = new ComfortProfileImp(true);
         importData(profileImp, invoice);
@@ -44,6 +62,12 @@ public class InvoiceData {
         return profileImp;
     }
    
+    /**
+     * Imports the data from an invoice into a {@link BasicProfileImp} instance.
+     *
+     * @param profileImp the {IBasicProfile} implementation
+     * @param invoice the invoice
+     */
     public void importData(BasicProfileImp profileImp, Invoice invoice) {
         profileImp.setTest(true);
         profileImp.setId(String.format("I/%05d", invoice.getId()));
@@ -69,6 +93,12 @@ public class InvoiceData {
         profileImp.setInvoiceCurrencyCode("EUR");
     }
     
+    /**
+     * Import the basic data into a {@link BasicProfileImp} instance.
+     *
+     * @param profileImp the {IBasicProfile} implementation
+     * @param invoice the invoice
+     */
     public void importBasicData(BasicProfileImp profileImp, Invoice invoice) {
         profileImp.addNote(
             new String[]{"This is a test invoice.\nNothing on this invoice is real.\nThis invoice is part of a tutorial."});
@@ -107,6 +137,12 @@ public class InvoiceData {
             format2dec(gtA), "EUR");
     }
    
+    /**
+     * Import comfort data into a {@link ComfortProfileImp} instance.
+     *
+     * @param profileImp the {IComfortProfile} implementation
+     * @param invoice the invoice
+     */
     public void importComfortData(ComfortProfileImp profileImp, Invoice invoice) {
         profileImp.addNote(
             new String[]{"This is a test invoice.\nNothing on this invoice is real.\nThis invoice is part of a tutorial."},
@@ -180,16 +216,34 @@ public class InvoiceData {
             format2dec(gtA), "EUR");
     }
     
+    /**
+     * Round a double value.
+     *
+     * @param d the double value
+     * @return the rounded double
+     */
     public static double round(double d) {
         d = d * 100;
         long tmp = Math.round(d);
         return (double) tmp / 100;
     }
     
+    /**
+     * Format a double so that it has 2 decimals.
+     *
+     * @param d the double value
+     * @return a string representation of the double value
+     */
     public static String format2dec(double d) {
         return String.format("%.2f", d);
     }
     
+    /**
+     * Format a double so that it has 4 decimals.
+     *
+     * @param d the double value
+     * @return a string representation of the double value
+     */
     public static String format4dec(double d) {
         return String.format("%.4f", d);
     }
