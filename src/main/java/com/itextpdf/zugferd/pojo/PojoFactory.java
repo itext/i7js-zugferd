@@ -1,5 +1,7 @@
 /*
  * Part of a set of classes based on a sample database.
+ * This example was written by Bruno Lowagie in the context of a book.
+ * See http://developers.itextpdf.com/content/zugferd-future-invoicing/3-simple-invoice-database
  */
 package com.itextpdf.zugferd.pojo;
 
@@ -19,14 +21,33 @@ import java.util.List;
  */
 public class PojoFactory {
     
+    /** Instance of this PojoFactory that will be reused. */
     protected static PojoFactory factory = null;
+    
+    /** The connection to the HSQLDB database. */
     protected Connection connection;
+    
+    /** The customer cache. */
     protected HashMap<Integer, Customer> customerCache = new HashMap<Integer, Customer>();
+    
+    /** The product cache. */
     protected HashMap<Integer, Product> productCache = new HashMap<Integer, Product>();
+    
+    /** Prepared statement to get customer data. */
     protected PreparedStatement getCustomer;
+
+    /** Prepared statement to get product data. */
     protected PreparedStatement getProduct;
+
+    /** Prepared statement to get items. */
     protected PreparedStatement getItems;
     
+    /**
+     * Instantiates a new POJO factory.
+     *
+     * @throws ClassNotFoundException the class not found exception
+     * @throws SQLException the SQL exception
+     */
     private PojoFactory() throws ClassNotFoundException, SQLException {
         Class.forName("org.hsqldb.jdbcDriver");
         connection = DriverManager.getConnection(
@@ -36,6 +57,12 @@ public class PojoFactory {
         getItems = connection.prepareStatement("SELECT * FROM Item WHERE invoiceid = ?");
     }
     
+    /**
+     * Gets the single instance of PojoFactory.
+     *
+     * @return single instance of PojoFactory
+     * @throws SQLException the SQL exception
+     */
     public static PojoFactory getInstance() throws SQLException {
         if (factory == null || factory.connection.isClosed()) {
             try {
@@ -47,10 +74,21 @@ public class PojoFactory {
         return factory;
     }
     
+    /**
+     * Close the database connection.
+     *
+     * @throws SQLException the SQL exception
+     */
     public void close() throws SQLException {
         connection.close();
     }
     
+    /**
+     * Gets all the {@link Invoice} objects stored in the database.
+     *
+     * @return the invoices
+     * @throws SQLException the SQL exception
+     */
     public List<Invoice> getInvoices() throws SQLException {
         List<Invoice> invoices = new ArrayList<Invoice>();
         Statement stm = connection.createStatement();
@@ -62,6 +100,13 @@ public class PojoFactory {
         return invoices;
     }
     
+    /**
+     * Creates an {@link Invoice} object from a database result set.
+     *
+     * @param rs the result set
+     * @return the invoice object
+     * @throws SQLException the SQL exception
+     */
     public Invoice getInvoice(ResultSet rs) throws SQLException {
         Invoice invoice = new Invoice();
         invoice.setId(rs.getInt("id"));
@@ -76,6 +121,13 @@ public class PojoFactory {
         return invoice;
     }
     
+    /**
+     * Creates an {@link Item} object from a database result set.
+     *
+     * @param rs the result set
+     * @return the item object
+     * @throws SQLException the SQL exception
+     */
     public Item getItem(ResultSet rs) throws SQLException {
         Item item = new Item();
         item.setItem(rs.getInt("Item"));
@@ -86,6 +138,13 @@ public class PojoFactory {
         return item;
     }
     
+    /**
+     * Gets a {@link Customer} object, given a customer id.
+     *
+     * @param id the customer id
+     * @return the customer object
+     * @throws SQLException the SQL exception
+     */
     public Customer getCustomer(int id) throws SQLException {
         if (customerCache.containsKey(id))
             return customerCache.get(id);
@@ -106,6 +165,13 @@ public class PojoFactory {
         return null;
     }
     
+    /**
+     * Gets a {@link Product} object, given a product id.
+     *
+     * @param id the product id
+     * @return the product object
+     * @throws SQLException the SQL exception
+     */
     public Product getProduct(int id) throws SQLException {
         if (productCache.containsKey(id))
             return productCache.get(id);
@@ -123,8 +189,15 @@ public class PojoFactory {
         return null;
     }
     
+    /**
+     * Gets a list of {@link Item} objects for a specific invoice.
+     *
+     * @param invoiceid the invoice id
+     * @return the items
+     * @throws SQLException the SQL exception
+     */
     public List<Item> getItems(int invoiceid) throws SQLException {
-        List items = new ArrayList<Item>();
+        List<Item> items = new ArrayList<Item>();
         getItems.setInt(1, invoiceid);
         ResultSet rs = getItems.executeQuery();
         while (rs.next()) {
