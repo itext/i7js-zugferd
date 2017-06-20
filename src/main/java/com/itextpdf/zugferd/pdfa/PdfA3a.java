@@ -13,7 +13,10 @@ import com.itextpdf.kernel.font.PdfFont;
 import com.itextpdf.kernel.font.PdfFontFactory;
 import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.kernel.pdf.PdfAConformanceLevel;
+import com.itextpdf.kernel.pdf.PdfDocumentInfo;
 import com.itextpdf.kernel.pdf.PdfOutputIntent;
+import com.itextpdf.kernel.pdf.PdfString;
+import com.itextpdf.kernel.pdf.PdfViewerPreferences;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.Image;
@@ -32,11 +35,11 @@ public class PdfA3a {
     public static final String FOX = "resources/images/fox.bmp";
     /** An image resource. */
     public static final String DOG = "resources/images/dog.bmp";
-    /** A path to a color profile. */
-    public static final String ICC = "resources/color/sRGB_CS_profile.icm";
     /** A font that will be embedded. */
     public static final String FONT = "resources/fonts/OpenSans-Regular.ttf";
-
+    /** A path to a color profile. */
+    public static final String ICC = "resources/color/sRGB_CS_profile.icm";
+    
     /**
      * Creates a simple PDF with images and text.
      * @param args no arguments needed.
@@ -62,6 +65,10 @@ public class PdfA3a {
         	            "sRGB IEC61966-2.1", new FileInputStream(ICC)));
     	pdfDocument.setDefaultPageSize(PageSize.A4.rotate());
     	pdfDocument.setTagged();
+        pdfDocument.getDocumentInfo().setTitle("The fox and the dog");
+    	pdfDocument.getCatalog().setViewerPreferences(
+			new PdfViewerPreferences().setDisplayDocTitle(true));
+    	pdfDocument.getCatalog().setLang(new PdfString("en-US"));
     	// step 2
     	Document document = new Document(pdfDocument);
     	// step 3

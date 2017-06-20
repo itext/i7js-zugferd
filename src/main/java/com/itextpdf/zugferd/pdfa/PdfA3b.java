@@ -32,11 +32,11 @@ public class PdfA3b {
     public static final String FOX = "resources/images/fox.bmp";
     /** An image resource. */
     public static final String DOG = "resources/images/dog.bmp";
-    /** A path to a color profile. */
-    public static final String ICC = "resources/color/sRGB_CS_profile.icm";
     /** A font that will be embedded. */
     public static final String FONT = "resources/fonts/OpenSans-Regular.ttf";
-
+    /** A path to a color profile. */
+    public static final String ICC = "resources/color/sRGB_CS_profile.icm";
+    
     /**
      * Creates a simple PDF with images and text.
      *
