@@ -1,5 +1,6 @@
 /*
- * Code written by Bruno Lowagie in the context of an example.
+ * Code written by Bruno Lowagie in the context of an example for the ZUGFeRD book.
+ * See http://developers.itextpdf.com/content/zugferd-future-invoicing/
  */
 package com.itextpdf.zugferd.data;
 

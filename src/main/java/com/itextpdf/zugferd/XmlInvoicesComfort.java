@@ -20,11 +20,27 @@ import com.itextpdf.zugferd.pojo.PojoFactory;
 import com.itextpdf.zugferd.profiles.IBasicProfile;
 
 /**
+ * Creates a set of XML files that represent invoices.
+ *
  * @author  Bruno Lowagie
  */
 public class XmlInvoicesComfort {
+    
+    /** The Constant DEST. */
     public static final String DEST = "results/zugferd/xml/comfort%05d.xml";
     
+    /**
+     * The main method.
+     *
+     * @param args the arguments
+     * @throws SQLException the SQL exception
+     * @throws ParserConfigurationException the parser configuration exception
+     * @throws SAXException the SAX exception
+     * @throws IOException Signals that an I/O exception has occurred.
+     * @throws TransformerException the transformer exception
+     * @throws DataIncompleteException the data incomplete exception
+     * @throws InvalidCodeException the invalid code exception
+     */
     public static void main(String[] args) throws SQLException, ParserConfigurationException, SAXException, IOException, TransformerException, DataIncompleteException, InvalidCodeException {
     	LicenseKey.loadLicenseFile(System.getenv("ITEXT7_LICENSEKEY") + "/itextkey-html2pdf_typography.xml");
     	File file = new File(DEST);
