@@ -98,7 +98,9 @@ public class HtmlInvoicesComfort {
      * @throws InvalidCodeException the invalid code exception
      * @throws TransformerException the transformer exception
      */
-    public void createHtml(Invoice invoice, Writer writer) throws IOException, ParserConfigurationException, SAXException, DataIncompleteException, InvalidCodeException, TransformerException {
+    public void createHtml(Invoice invoice, Writer writer)
+    	throws IOException, ParserConfigurationException, SAXException,
+    	DataIncompleteException, InvalidCodeException, TransformerException {
         IComfortProfile comfort = new InvoiceData().createComfortProfileData(invoice);
         InvoiceDOM dom = new InvoiceDOM(comfort);
         StreamSource xml = new StreamSource(new ByteArrayInputStream(dom.toXML()));
