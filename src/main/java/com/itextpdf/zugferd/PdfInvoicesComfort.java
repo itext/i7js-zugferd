@@ -69,8 +69,13 @@ public class PdfInvoicesComfort {
      * @throws InvalidCodeException the invalid code exception
      * @throws TransformerException the transformer exception
      */
-    public static void main(String[] args) throws SQLException, IOException, ParserConfigurationException, SAXException, DataIncompleteException, InvalidCodeException, TransformerException {
-        LicenseKey.loadLicenseFile(System.getenv("ITEXT7_LICENSEKEY") + "/itextkey-html2pdf_typography.xml");
+    public static void main(String[] args)
+    	throws SQLException, IOException,
+    	ParserConfigurationException, SAXException, TransformerException,
+    	DataIncompleteException, InvalidCodeException {
+        LicenseKey.loadLicenseFile(
+        	System.getenv("ITEXT7_LICENSEKEY")
+        	+ "/itextkey-html2pdf_typography.xml");
        	File file = new File(DEST);
         file.getParentFile().mkdirs();
         PdfInvoicesComfort app = new PdfInvoicesComfort();
@@ -94,12 +99,18 @@ public class PdfInvoicesComfort {
      * @throws InvalidCodeException the invalid code exception
      * @throws TransformerException the transformer exception
      */
-    public void createPdf(Invoice invoice, FileOutputStream fos) throws IOException, ParserConfigurationException, SAXException, DataIncompleteException, InvalidCodeException, TransformerException {
-        IComfortProfile comfort = new InvoiceData().createComfortProfileData(invoice);
+    public void createPdf(Invoice invoice, FileOutputStream fos)
+    	throws IOException, ParserConfigurationException,
+    	SAXException, TransformerException,
+    	DataIncompleteException, InvalidCodeException {
+        IComfortProfile comfort =
+        	new InvoiceData().createComfortProfileData(invoice);
         InvoiceDOM dom = new InvoiceDOM(comfort);
         
-        StreamSource xml = new StreamSource(new ByteArrayInputStream(dom.toXML()));
-        StreamSource xsl = new StreamSource(new File(XSL));
+        StreamSource xml = new StreamSource(
+        		new ByteArrayInputStream(dom.toXML()));
+        StreamSource xsl = new StreamSource(
+        		new File(XSL));
         TransformerFactory factory = TransformerFactory.newInstance();
         Transformer transformer = factory.newTransformer(xsl);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -109,15 +120,16 @@ public class PdfInvoicesComfort {
         htmlWriter.close();
         byte[] html = baos.toByteArray();
         
-        ZugferdDocument pdfDocument = new ZugferdDocument(new PdfWriter(fos),
-        	    ZugferdConformanceLevel.ZUGFeRDComfort,
-        	    new PdfOutputIntent("Custom", "", "http://www.color.org",
-        	            "sRGB IEC61966-2.1", new FileInputStream(INTENT)));
+        ZugferdDocument pdfDocument = new ZugferdDocument(
+        	new PdfWriter(fos), ZugferdConformanceLevel.ZUGFeRDComfort,
+        	new PdfOutputIntent("Custom", "", "http://www.color.org",
+        	    "sRGB IEC61966-2.1", new FileInputStream(INTENT)));
         pdfDocument.addFileAttachment(
         		"ZUGFeRD invoice", dom.toXML(), "ZUGFeRD-invoice.xml",
         		PdfName.ApplicationXml, new PdfDictionary(), PdfName.Alternative);
         pdfDocument.setTagged();
-        HtmlConverter.convertToPdf(new ByteArrayInputStream(html), pdfDocument, getProperties());
+        HtmlConverter.convertToPdf(
+        		new ByteArrayInputStream(html), pdfDocument, getProperties());
     }
     
     /**
