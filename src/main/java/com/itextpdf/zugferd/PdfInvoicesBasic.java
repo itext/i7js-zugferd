@@ -198,60 +198,6 @@ public class PdfInvoicesBasic {
     }
     
     /**
-     * Gets the line item table.
-     *
-     * @param invoice the invoice
-     * @param bold a bold font
-     * @return the line item table
-     */
-    public Table getLineItemTable(Invoice invoice, PdfFont bold) {
-        Table table = new Table(new UnitValue[]{
-        		new UnitValue(UnitValue.PERCENT, 43.75f),
-        		new UnitValue(UnitValue.PERCENT, 12.5f),
-        		new UnitValue(UnitValue.PERCENT, 6.25f),
-        		new UnitValue(UnitValue.PERCENT, 12.5f),
-        		new UnitValue(UnitValue.PERCENT, 12.5f),
-        		new UnitValue(UnitValue.PERCENT, 12.5f)})
-        		.setWidthPercent(100)
-				.setMarginTop(10).setMarginBottom(10);
-        table.addHeaderCell(new Cell().setPadding(0.8f)
-        		.add(new Paragraph("Item:").setMultipliedLeading(1).setFont(bold)));
-        table.addHeaderCell(new Cell().setPadding(0.8f)
-        		.add(new Paragraph("Price:").setMultipliedLeading(1).setFont(bold)));
-        table.addHeaderCell(new Cell().setPadding(0.8f)
-        		.add(new Paragraph("Qty:").setMultipliedLeading(1).setFont(bold)));
-        table.addHeaderCell(new Cell().setPadding(0.8f)
-        		.add(new Paragraph("Subtotal:").setMultipliedLeading(1).setFont(bold)));
-        table.addHeaderCell(new Cell().setPadding(0.8f)
-        		.add(new Paragraph("VAT:").setMultipliedLeading(1).setFont(bold)));
-        table.addHeaderCell(new Cell().setPadding(0.8f)
-        		.add(new Paragraph("Total:").setMultipliedLeading(1).setFont(bold)));
-
-        Product product;
-        for (Item item : invoice.getItems()) {
-            product = item.getProduct();
-            table.addCell(new Cell().setPadding(0.8f)
-                	.add(new Paragraph(product.getName()).setMultipliedLeading(1)));
-            table.addCell(new Cell().setPadding(0.8f)
-                	.add(new Paragraph(InvoiceData.format2dec(InvoiceData.round(product.getPrice()))).setMultipliedLeading(1))
-                	.setTextAlignment(TextAlignment.RIGHT));
-            table.addCell(new Cell().setPadding(0.8f)
-                	.add(new Paragraph(String.valueOf(item.getQuantity())).setMultipliedLeading(1))
-                	.setTextAlignment(TextAlignment.RIGHT));
-            table.addCell(new Cell().setPadding(0.8f)
-                	.add(new Paragraph(InvoiceData.format2dec(InvoiceData.round(item.getCost()))).setMultipliedLeading(1))
-                	.setTextAlignment(TextAlignment.RIGHT));
-            table.addCell(new Cell().setPadding(0.8f)
-                	.add(new Paragraph(InvoiceData.format2dec(InvoiceData.round(product.getVat()))).setMultipliedLeading(1))
-                	.setTextAlignment(TextAlignment.RIGHT));
-            table.addCell(new Cell().setPadding(0.8f)
-                	.add(new Paragraph(InvoiceData.format2dec(InvoiceData.round(item.getCost() + ((item.getCost() * product.getVat()) / 100)))).setMultipliedLeading(1))
-                	.setTextAlignment(TextAlignment.RIGHT));
-        }
-        return table;
-    }
-    
-    /**
      * Gets the party address.
      *
      * @param who either "To:" or "From:"
@@ -288,8 +234,7 @@ public class PdfInvoicesBasic {
      */
     public Cell getPartyTax(String[] taxId, String[] taxSchema, PdfFont bold) {
     	Paragraph p = new Paragraph()
-    		.setFontSize(10)
-			.setMultipliedLeading(1.0f)
+    		.setFontSize(10).setMultipliedLeading(1.0f)
 			.add(new Text("Tax ID(s):").setFont(bold));
         if (taxId.length == 0) {
             p.add("\nNot applicable");
@@ -301,10 +246,79 @@ public class PdfInvoicesBasic {
                 .add(String.format("%s: %s", taxSchema[i], taxId[i]));
             }
         }
-        Cell cell = new Cell()
-        	.setBorder(Border.NO_BORDER)
-        	.add(p);
-        return cell;
+        return new Cell().setBorder(Border.NO_BORDER).add(p);
+    }
+    
+    /**
+     * Gets the line item table.
+     *
+     * @param invoice the invoice
+     * @param bold a bold font
+     * @return the line item table
+     */
+    public Table getLineItemTable(Invoice invoice, PdfFont bold) {
+        Table table = new Table(new UnitValue[]{
+        		new UnitValue(UnitValue.PERCENT, 43.75f),
+        		new UnitValue(UnitValue.PERCENT, 12.5f),
+        		new UnitValue(UnitValue.PERCENT, 6.25f),
+        		new UnitValue(UnitValue.PERCENT, 12.5f),
+        		new UnitValue(UnitValue.PERCENT, 12.5f),
+        		new UnitValue(UnitValue.PERCENT, 12.5f)})
+        		.setWidthPercent(100)
+				.setMarginTop(10).setMarginBottom(10);
+        table.addHeaderCell(createCell("Item:", bold));
+        table.addHeaderCell(createCell("Price:", bold));
+        table.addHeaderCell(createCell("Qty:", bold));
+        table.addHeaderCell(createCell("Subtotal:", bold));
+        table.addHeaderCell(createCell("VAT:", bold));
+        table.addHeaderCell(createCell("Total:", bold));
+        Product product;
+        for (Item item : invoice.getItems()) {
+            product = item.getProduct();
+            table.addCell(createCell(product.getName()));
+            table.addCell(createCell(
+            	InvoiceData.format2dec(InvoiceData.round(product.getPrice())))
+                .setTextAlignment(TextAlignment.RIGHT));
+            table.addCell(createCell(String.valueOf(item.getQuantity()))
+                .setTextAlignment(TextAlignment.RIGHT));
+            table.addCell(createCell(
+                InvoiceData.format2dec(InvoiceData.round(item.getCost())))
+                .setTextAlignment(TextAlignment.RIGHT));
+            table.addCell(createCell(
+                InvoiceData.format2dec(InvoiceData.round(product.getVat())))
+                .setTextAlignment(TextAlignment.RIGHT));
+            table.addCell(createCell(
+                InvoiceData.format2dec(InvoiceData.round(
+                	item.getCost() + ((item.getCost() * product.getVat()) / 100))))
+                .setTextAlignment(TextAlignment.RIGHT));
+        }
+        return table;
+    }
+    
+    /**
+     * Creates a cell with specific properties set.
+     *
+     * @param text the text that will be in the cell
+     * @return the cell
+     */
+    
+    public Cell createCell(String text) {
+    	return new Cell().setPadding(0.8f)
+    		.add(new Paragraph(text)
+    			.setMultipliedLeading(1));
+    }
+    
+    /**
+     * Creates a cell with specific properties set.
+     *
+     * @param text the text that will be in the cell
+     * @param font the font
+     * @return the cell
+     */
+    public Cell createCell(String text, PdfFont font) {
+    	return new Cell().setPadding(0.8f)
+        	.add(new Paragraph(text)
+        		.setFont(font).setMultipliedLeading(1));
     }
     
     /**
@@ -333,53 +347,37 @@ public class PdfInvoicesBasic {
         		new UnitValue(UnitValue.PERCENT, 25f),
         		new UnitValue(UnitValue.PERCENT, 8.34f)})
         	.setWidthPercent(100);
-        table.addCell(new Cell().setPadding(0.8f).add(
-        		new Paragraph("TAX:").setMultipliedLeading(1).setFont(bold)));
-        table.addCell(new Cell().setPadding(0.8f).add(
-        		new Paragraph("%").setMultipliedLeading(1).setFont(bold))
-        		.setTextAlignment(TextAlignment.RIGHT));
-        table.addCell(new Cell().setPadding(0.8f).add(
-        		new Paragraph("Base amount:").setMultipliedLeading(1).setFont(bold)));
-        table.addCell(new Cell().setPadding(0.8f).add(
-        		new Paragraph("Tax amount:").setMultipliedLeading(1).setFont(bold)));
-        table.addCell(new Cell().setPadding(0.8f).add(
-        		new Paragraph("Total:").setMultipliedLeading(1).setFont(bold)));
-        table.addCell(new Cell().setPadding(0.8f).add(
-        		new Paragraph("Curr.:").setMultipliedLeading(1).setFont(bold)));
+        table.addCell(createCell("TAX:", bold));
+        table.addCell(createCell("%", bold)
+        	.setTextAlignment(TextAlignment.RIGHT));
+        table.addCell(createCell("Base amount:", bold));
+        table.addCell(createCell("Tax amount:", bold));
+        table.addCell(createCell("Total:", bold));
+        table.addCell(createCell("Curr.:", bold));
         int n = type.length;
         for (int i = 0; i < n; i++) {
-            table.addCell(new Cell().setPadding(0.8f).add(
-            		new Paragraph(type[i]).setMultipliedLeading(1))
-            		.setTextAlignment(TextAlignment.RIGHT));
-            table.addCell(new Cell().setPadding(0.8f).add(
-            		new Paragraph(percentage[i]).setMultipliedLeading(1))
-            		.setTextAlignment(TextAlignment.RIGHT));
-            table.addCell(new Cell().setPadding(0.8f).add(
-            		new Paragraph(base[i]).setMultipliedLeading(1))
-            		.setTextAlignment(TextAlignment.RIGHT));
-            table.addCell(new Cell().setPadding(0.8f).add(
-            		new Paragraph(tax[i]).setMultipliedLeading(1))
-            		.setTextAlignment(TextAlignment.RIGHT));
+            table.addCell(createCell(type[i])
+            	.setTextAlignment(TextAlignment.RIGHT));
+            table.addCell(createCell(percentage[i])
+            	.setTextAlignment(TextAlignment.RIGHT));
+            table.addCell(createCell(base[i])
+            	.setTextAlignment(TextAlignment.RIGHT));
+            table.addCell(createCell(tax[i])
+            	.setTextAlignment(TextAlignment.RIGHT));
             double total = Double.parseDouble(base[i]) + Double.parseDouble(tax[i]);
-            table.addCell(new Cell().setPadding(0.8f).add(
-            		new Paragraph(InvoiceData.format2dec(InvoiceData.round(total)))
-            		.setMultipliedLeading(1))
-            		.setTextAlignment(TextAlignment.RIGHT));
-            table.addCell(new Cell().setPadding(0.8f).add(
-            		new Paragraph(currency[i]).setMultipliedLeading(1)));
+            table.addCell(createCell(
+            	InvoiceData.format2dec(InvoiceData.round(total)))
+            	.setTextAlignment(TextAlignment.RIGHT));
+            table.addCell(createCell(currency[i]));
         }
         table.addCell(new Cell(1, 2).setBorder(Border.NO_BORDER));
-        table.addCell(new Cell().setPadding(0.8f).add(
-        		new Paragraph(tBase).setMultipliedLeading(1).setFont(bold))
-        .setTextAlignment(TextAlignment.RIGHT));
-        table.addCell(new Cell().setPadding(0.8f).add(
-        		new Paragraph(tTax).setMultipliedLeading(1).setFont(bold))
-        .setTextAlignment(TextAlignment.RIGHT));
-        table.addCell(new Cell().setPadding(0.8f).add(
-        		new Paragraph(tTotal).setMultipliedLeading(1).setFont(bold))
-        .setTextAlignment(TextAlignment.RIGHT));
-        table.addCell(new Cell().setPadding(0.8f).add(
-        		new Paragraph(tCurrency).setMultipliedLeading(1).setFont(bold)));
+        table.addCell(createCell(tBase, bold)
+        	.setTextAlignment(TextAlignment.RIGHT));
+        table.addCell(createCell(tTax, bold)
+        	.setTextAlignment(TextAlignment.RIGHT));
+        table.addCell(createCell(tTotal, bold)
+        	.setTextAlignment(TextAlignment.RIGHT));
+        table.addCell(createCell(tCurrency, bold));
         return table;
     }
     
