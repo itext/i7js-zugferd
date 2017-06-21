@@ -1,5 +1,6 @@
 /*
- * This example was written by Bruno Lowagie.
+ * This example was written by Bruno Lowagie in the context of a book.
+ * See http://developers.itextpdf.com/content/zugferd-future-invoicing/6-creating-html-invoices
  */
 package com.itextpdf.zugferd;
 
@@ -33,16 +34,43 @@ import com.itextpdf.zugferd.pojo.PojoFactory;
 import com.itextpdf.zugferd.profiles.IComfortProfile;
 
 /**
+ * Creates invoices in the HTML format
+ *
  * @author Bruno Lowagie
  */
 public class HtmlInvoicesComfort {
+    
+    /** The Constant DEST. */
     public static final String DEST = "results/zugferd/html/comfort%05d.html";
+    
+    /** The Constant XSL. */
     public static final String XSL = "resources/zugferd/invoice.xsl";
+    
+    /** The Constant CSS. */
     public static final String CSS = "resources/zugferd/invoice.css";
+    
+    /** The Constant LOGO. */
     public static final String LOGO = "resources/zugferd/logo.png";
     
-    public static void main(String[] args) throws SQLException, IOException, ParserConfigurationException, SAXException, DataIncompleteException, InvalidCodeException, TransformerException {
-        LicenseKey.loadLicenseFile(System.getenv("ITEXT7_LICENSEKEY") + "/itextkey-html2pdf_typography.xml");
+    /**
+     * The main method.
+     *
+     * @param args the arguments
+     * @throws SQLException the SQL exception
+     * @throws IOException Signals that an I/O exception has occurred.
+     * @throws ParserConfigurationException the parser configuration exception
+     * @throws SAXException the SAX exception
+     * @throws DataIncompleteException the data incomplete exception
+     * @throws InvalidCodeException the invalid code exception
+     * @throws TransformerException the transformer exception
+     */
+    public static void main(String[] args)
+        throws SQLException, IOException,
+            ParserConfigurationException, SAXException, TransformerException,
+            DataIncompleteException, InvalidCodeException {
+        LicenseKey.loadLicenseFile(
+        	System.getenv("ITEXT7_LICENSEKEY")
+        	+ "/itextkey-html2pdf_typography.xml");
     	File file = new File(DEST);
         file.getParentFile().mkdirs();
         File css = new File(CSS);
@@ -58,6 +86,18 @@ public class HtmlInvoicesComfort {
         factory.close();
     }
     
+    /**
+     * Creates the html.
+     *
+     * @param invoice the invoice
+     * @param writer the writer
+     * @throws IOException Signals that an I/O exception has occurred.
+     * @throws ParserConfigurationException the parser configuration exception
+     * @throws SAXException the SAX exception
+     * @throws DataIncompleteException the data incomplete exception
+     * @throws InvalidCodeException the invalid code exception
+     * @throws TransformerException the transformer exception
+     */
     public void createHtml(Invoice invoice, Writer writer) throws IOException, ParserConfigurationException, SAXException, DataIncompleteException, InvalidCodeException, TransformerException {
         IComfortProfile comfort = new InvoiceData().createComfortProfileData(invoice);
         InvoiceDOM dom = new InvoiceDOM(comfort);
@@ -70,6 +110,13 @@ public class HtmlInvoicesComfort {
         writer.close();
     }
     
+    /**
+     * Copies a file.
+     *
+     * @param source the source
+     * @param dest the dest
+     * @throws IOException Signals that an I/O exception has occurred.
+     */
     private static void copyFile(File source, File dest) throws IOException {
         InputStream input = new FileInputStream(source);
         OutputStream output = new FileOutputStream(dest);

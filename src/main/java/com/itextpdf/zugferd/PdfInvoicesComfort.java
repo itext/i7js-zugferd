@@ -1,5 +1,6 @@
 /*
- * This example was written by Bruno Lowagie.
+ * This example was written by Bruno Lowagie in the context of a book.
+ * See http://developers.itextpdf.com/content/zugferd-future-invoicing/7-creating-pdf-invoices-comfort
  */
 package com.itextpdf.zugferd;
 
@@ -38,16 +39,36 @@ import com.itextpdf.zugferd.pojo.PojoFactory;
 import com.itextpdf.zugferd.profiles.IComfortProfile;
 
 /**
+ * Creates ZUGFeRD invoices using the Comfort profile.
+ * 
  * @author Bruno Lowagie
  */
 public class PdfInvoicesComfort {
 	
+    /** The pattern for the destination files. */
     public static final String DEST = "results/zugferd/pdf/comfort%05d.pdf";
+    
+    /** The path to the XSL file. */
     public static final String XSL = "resources/zugferd/invoice.xsl";
+    
+    /** The path to the output intent file. */
     public static final String INTENT = "resources/color/sRGB_CS_profile.icm";
     
+    /** The converter properties. */
     public static ConverterProperties properties;
     
+    /**
+     * The main method.
+     *
+     * @param args the arguments
+     * @throws SQLException the SQL exception
+     * @throws IOException Signals that an I/O exception has occurred.
+     * @throws ParserConfigurationException the parser configuration exception
+     * @throws SAXException the SAX exception
+     * @throws DataIncompleteException the data incomplete exception
+     * @throws InvalidCodeException the invalid code exception
+     * @throws TransformerException the transformer exception
+     */
     public static void main(String[] args) throws SQLException, IOException, ParserConfigurationException, SAXException, DataIncompleteException, InvalidCodeException, TransformerException {
         LicenseKey.loadLicenseFile(System.getenv("ITEXT7_LICENSEKEY") + "/itextkey-html2pdf_typography.xml");
        	File file = new File(DEST);
@@ -61,6 +82,18 @@ public class PdfInvoicesComfort {
         factory.close();
     }
     
+    /**
+     * Creates a PDF invoice.
+     *
+     * @param invoice the invoice
+     * @param fos the fos
+     * @throws IOException Signals that an I/O exception has occurred.
+     * @throws ParserConfigurationException the parser configuration exception
+     * @throws SAXException the SAX exception
+     * @throws DataIncompleteException the data incomplete exception
+     * @throws InvalidCodeException the invalid code exception
+     * @throws TransformerException the transformer exception
+     */
     public void createPdf(Invoice invoice, FileOutputStream fos) throws IOException, ParserConfigurationException, SAXException, DataIncompleteException, InvalidCodeException, TransformerException {
         IComfortProfile comfort = new InvoiceData().createComfortProfileData(invoice);
         InvoiceDOM dom = new InvoiceDOM(comfort);
@@ -87,6 +120,11 @@ public class PdfInvoicesComfort {
         HtmlConverter.convertToPdf(new ByteArrayInputStream(html), pdfDocument, getProperties());
     }
     
+    /**
+     * Gets the converter properties.
+     *
+     * @return the properties
+     */
     public ConverterProperties getProperties() {
     	if (properties == null) {
 		    properties = new ConverterProperties()
