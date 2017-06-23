@@ -26,7 +26,10 @@
 		</tr>
 		</table>
 		<table width="100%" id="products">
+		<thead>
 		<tr class="headerrow"><th>#</th><th>Product</th><th>Unit</th><th>Qty.</th><th>Sub.</th><th>Tax%</th><th>Tax</th><th>Total</th><th>Curr.</th></tr>
+		</thead>
+		<tbody>
 		<xsl:for-each select="ram:IncludedSupplyChainTradeLineItem">
 		<tr>
 		<td align="Right"><xsl:value-of select="ram:AssociatedDocumentLineDocument/ram:LineID" />.</td>
@@ -46,9 +49,13 @@
 		<td><xsl:value-of select="ram:SpecifiedSupplyChainTradeSettlement/ram:SpecifiedTradeSettlementMonetarySummation/ram:LineTotalAmount/@currencyID" /></td>
 		</tr>
 		</xsl:for-each>
+		</tbody>
 		</table>
 		<table width="100%" id="totals">
+		<thead>
 		<tr class="headerrow"><th>Tax</th><th>%</th><th>Base amount:</th><th>Tax amount:</th><th>Total</th><th>Curr.</th></tr>
+		</thead>
+		<tbody>
 		<xsl:for-each select="ram:ApplicableSupplyChainTradeSettlement/ram:ApplicableTradeTax">
 		<tr>
 		<td align="Right"><xsl:value-of select="ram:TypeCode" /></td>
@@ -69,6 +76,7 @@
 		<td class="total" align="Right"><xsl:value-of select="ram:ApplicableSupplyChainTradeSettlement/ram:SpecifiedTradeSettlementMonetarySummation/ram:GrandTotalAmount" /></td>
 		<td class="total"><xsl:value-of select="ram:ApplicableSupplyChainTradeSettlement/ram:SpecifiedTradeSettlementMonetarySummation/ram:GrandTotalAmount/@currencyID" /></td>
 		</tr>
+		</tbody>
 		</table>
 		<table id="wireinfo">
 		<tr><td colspan="4">Please wire the amount due to our bank account using the following reference: <xsl:value-of select="ram:ApplicableSupplyChainTradeSettlement/ram:PaymentReference" /></td></tr>
