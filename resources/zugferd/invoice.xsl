@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<xsl:stylesheet exclude-result-prefixes="#all" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ram="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:12" xmlns:rsm="urn:ferd:CrossIndustryDocument:invoice:1p0" xmlns:udt="urn:un:unece:uncefact:data:standard:UnqualifiedDataType:15" version="1.0">
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ram="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:12" xmlns:rsm="urn:ferd:CrossIndustryDocument:invoice:1p0" xmlns:udt="urn:un:unece:uncefact:data:standard:UnqualifiedDataType:15" version="1.0">
     <xsl:output method="xml" indent="yes" encoding="UTF-8" />
 	<xsl:template match="/rsm:CrossIndustryDocument">
 	<html>
