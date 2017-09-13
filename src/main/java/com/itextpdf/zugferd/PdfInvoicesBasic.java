@@ -16,6 +16,7 @@ import java.util.List;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
+import com.itextpdf.kernel.pdf.filespec.PdfFileSpec;
 import org.xml.sax.SAXException;
 
 import com.itextpdf.kernel.font.PdfFont;
@@ -25,7 +26,7 @@ import com.itextpdf.kernel.pdf.PdfName;
 import com.itextpdf.kernel.pdf.PdfOutputIntent;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
-import com.itextpdf.layout.border.Border;
+import com.itextpdf.layout.borders.Border;
 import com.itextpdf.layout.element.Cell;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
@@ -116,9 +117,9 @@ public class PdfInvoicesBasic {
     			new PdfWriter(dest), ZugferdConformanceLevel.ZUGFeRDBasic,
     			new PdfOutputIntent("Custom", "", "http://www.color.org",
         	            "sRGB IEC61966-2.1", new FileInputStream(ICC)));
-        pdfDocument.addFileAttachment(
-        		"ZUGFeRD invoice", dom.toXML(), "ZUGFeRD-invoice.xml",
-        		PdfName.ApplicationXml, new PdfDictionary(), PdfName.Alternative);
+        pdfDocument.addFileAttachment("ZUGFeRD invoice", PdfFileSpec.createEmbeddedFileSpec(
+                pdfDocument, dom.toXML(), "ZUGFeRD invoice", "ZUGFeRD-invoice.xml",
+                PdfName.ApplicationXml, new PdfDictionary(), PdfName.Alternative));
         
         // Create the document
     	Document document = new Document(pdfDocument);
