@@ -174,7 +174,7 @@ public class PdfInvoicesBasic {
         Table table = new Table(new UnitValue[]{
         		new UnitValue(UnitValue.PERCENT, 50),
         		new UnitValue(UnitValue.PERCENT, 50)})
-        		.setWidthPercent(100);
+        		.setWidth(UnitValue.createPercentValue(100));
         table.addCell(getPartyAddress("From:",
                 basic.getSellerName(),
                 basic.getSellerLineOne(),
@@ -265,7 +265,7 @@ public class PdfInvoicesBasic {
         		new UnitValue(UnitValue.PERCENT, 12.5f),
         		new UnitValue(UnitValue.PERCENT, 12.5f),
         		new UnitValue(UnitValue.PERCENT, 12.5f)})
-        		.setWidthPercent(100)
+        		.setWidth(UnitValue.createPercentValue(100))
 				.setMarginTop(10).setMarginBottom(10);
         table.addHeaderCell(createCell("Item:", bold));
         table.addHeaderCell(createCell("Price:", bold));
@@ -347,7 +347,7 @@ public class PdfInvoicesBasic {
         		new UnitValue(UnitValue.PERCENT, 25f),
         		new UnitValue(UnitValue.PERCENT, 25f),
         		new UnitValue(UnitValue.PERCENT, 8.34f)})
-        	.setWidthPercent(100);
+        	.setWidth(UnitValue.createPercentValue(100));
         table.addCell(createCell("TAX:", bold));
         table.addCell(createCell("%", bold)
         	.setTextAlignment(TextAlignment.RIGHT));
