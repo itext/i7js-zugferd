@@ -22,6 +22,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
+import com.itextpdf.kernel.pdf.filespec.PdfFileSpec;
 import org.xml.sax.SAXException;
 
 import com.itextpdf.html2pdf.ConverterProperties;
@@ -124,9 +125,9 @@ public class PdfInvoicesComfort {
         	new PdfWriter(fos), ZugferdConformanceLevel.ZUGFeRDComfort,
         	new PdfOutputIntent("Custom", "", "http://www.color.org",
         	    "sRGB IEC61966-2.1", new FileInputStream(INTENT)));
-        pdfDocument.addFileAttachment(
-        		"ZUGFeRD invoice", dom.toXML(), "ZUGFeRD-invoice.xml",
-        		PdfName.ApplicationXml, new PdfDictionary(), PdfName.Alternative);
+        pdfDocument.addFileAttachment("ZUGFeRD invoice", PdfFileSpec.createEmbeddedFileSpec(pdfDocument,
+                dom.toXML(), "ZUGFeRD invoice", "ZUGFeRD-invoice.xml",
+        		PdfName.ApplicationXml, new PdfDictionary(), PdfName.Alternative));
         pdfDocument.setTagged();
         HtmlConverter.convertToPdf(
         		new ByteArrayInputStream(html), pdfDocument, getProperties());
