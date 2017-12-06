@@ -4,7 +4,7 @@
 
   <groupId>com.itextpdf</groupId>
   <artifactId>zugferd-book</artifactId>
-  <version>7.1.0-SNAPSHOT</version>
+  <version>7.1.1-SNAPSHOT</version>
 
   <properties>
     <html2pdf.version>2.0.0-SNAPSHOT</html2pdf.version>
