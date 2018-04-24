@@ -4,17 +4,17 @@
 
   <groupId>com.itextpdf</groupId>
   <artifactId>zugferd-book</artifactId>
-  <version>7.1.2-SNAPSHOT</version>
+  <version>7.1.3-SNAPSHOT</version>
 
   <properties>
-    <html2pdf.version>2.0.0-SNAPSHOT</html2pdf.version>
+    <html2pdf.version>2.0.3-SNAPSHOT</html2pdf.version>
+    <zugferd.version>2.0.1-SNAPSHOT</zugferd.version>
+    <licensekey.version>3.0.2</licensekey.version>
     <java.version>1.8</java.version>
     <maven.compiler.source>${java.version}</maven.compiler.source>
     <maven.compiler.target>${java.version}</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <zugferd.version>2.0.0-SNAPSHOT</zugferd.version>
-    <licensekey.version>3.0.0-SNAPSHOT</licensekey.version>
   </properties>
 
   <repositories>
